@@ -2,29 +2,23 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, SafeAreaView, Dimensions, PixelRatio, Platform } from 'react-native';
 
-
-//** Code for responsive text amended from https://www.youtube.com/watch?v=F889Kfn1NgU&t=838s
-const { width: SCREEN_WIDTH,
-        height: SCREEN_HEIGHT
-      } = Dimensions.get('window');
-
-let scale = SCREEN_WIDTH / 320;
+// variable to hold screen width
 const screenWidth = Dimensions.get('window').width
 
-const normalize = (size) => {
-  const newSize = size * scale;
-  if (SCREEN_WIDTH > 900){
-    scale = scale / 2
-  }
+// variable for responsive text and border size
+let textSize = screenWidth * 0.15;
+let borderSize = screenWidth * 0.02;
 
-  if (Platform.OS === 'ios') {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize));
-  } else {
-    return Math.round(PixelRatio.roundToNearestPixel(newSize)) - 2;
-  }
-};
-
-//**
+// Large screen size
+if(screenWidth >= 900){
+  textSize = screenWidth * 0.1;
+  borderSize = screenWidth * 0.01;
+}
+// XL scrteen size
+if(screenWidth >= 1200){
+  textSize = screenWidth * 0.03;
+  borderSize = screenWidth * 0.005;
+}
 
 export default function App() {
   return (
@@ -42,13 +36,13 @@ export default function App() {
             <Text style={styles.text}>O</Text>
           </View>
           <View style={[styles.box,styles.noBorder]}>
-            <Text style={styles.text}>X</Text>
+            <Text style={styles.textX}>X</Text>
           </View>
         </View>
         {/* Second row */}
         <View style={styles.flexRow} >
           <View style={styles.box}>
-            <Text style={styles.text}>X</Text>
+            <Text style={styles.textX}>X</Text>
           </View>
           <View style={styles.box}>
             <Text style={styles.text}>O</Text>
@@ -60,10 +54,10 @@ export default function App() {
         {/* Third row */}
         <View style={[styles.flexRow, styles.noBorder]}>
           <View style={styles.box}>
-            <Text style={styles.text}>X</Text>
+            <Text style={styles.textX}>X</Text>
           </View>
           <View style={styles.box}>
-            <Text style={styles.text}>X</Text>
+            <Text style={styles.textX}>X</Text>
           </View>
           <View style={[styles.box,styles.noBorder]}>
             <Text style={styles.text}>O</Text>
@@ -92,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRightWidth: normalize(5),
+    borderRightWidth: Math.floor(borderSize),
     padding: '1%'
   },
   flexMiddleColumn:{
@@ -103,7 +97,7 @@ const styles = StyleSheet.create({
   flexRow:{
     flex:1,
     flexDirection: 'row',
-    borderBottomWidth: normalize(5),
+    borderBottomWidth: Math.floor(borderSize),
 
   },
   noBorder:{
@@ -111,7 +105,18 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
   },
   text:{
-    fontSize: normalize(40),
+    fontSize: Math.floor(textSize),
     fontWeight: 'bold',
+    textShadowColor: 'lightgrey',
+    textShadowOffset: {width: 5, height: 5},
+    textShadowRadius: 2,
+  },
+  textX:{
+    fontSize: Math.floor(textSize),
+    fontWeight: 'bold',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 5, height: 5},
+    textShadowRadius: 2,
+    color: 'red'
   }
 });
